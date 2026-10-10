@@ -52,6 +52,18 @@ public sealed class EnvironmentUserContext : IUserContext
     public string MachineName => string.IsNullOrWhiteSpace(Environment.MachineName) ? "unknown" : Environment.MachineName;
 }
 
+public sealed class FixedUserContext : IUserContext
+{
+    public FixedUserContext(string userName, string machineName)
+    {
+        UserName = userName;
+        MachineName = machineName;
+    }
+
+    public string UserName { get; }
+    public string MachineName { get; }
+}
+
 public sealed class FixedElevation : IElevationProbe
 {
     public FixedElevation(bool isElevated) => IsElevated = isElevated;

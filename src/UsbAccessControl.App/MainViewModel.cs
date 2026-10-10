@@ -69,7 +69,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
                 : OperatingSystem.IsWindows()
                     ? "권한 부족"
                     : "Windows 아님";
-        MachineText = $"{Environment.MachineName} · {Environment.UserName}";
+        MachineText = $"{session.MachineName} · {session.UserName}";
         Reload();
     }
 

@@ -14,10 +14,16 @@ public class HeadlessAppBuilder
     public static AppBuilder BuildAvaloniaApp()
     {
         Environment.SetEnvironmentVariable("USBAC_HEADLESS", "1");
-        return AppBuilder.Configure<App>()
+        var builder = AppBuilder.Configure<App>()
             .UseSkia()
             .WithInterFont()
             .UseHeadless(new AvaloniaHeadlessPlatformOptions { UseHeadlessDrawing = false });
+        if (Environment.GetEnvironmentVariable("USBAC_SCREENSHOT_CJK") == "1")
+        {
+            builder = builder.With(new FontManagerOptions { DefaultFamilyName = "Noto Sans CJK KR" });
+        }
+
+        return builder;
     }
 }
 
@@ -30,9 +36,11 @@ public class ScreenshotTests
         {
             DataContext = PreviewSession.CreateModel(),
             Width = 1180,
-            Height = 820,
-            FontFamily = FontFamily.Parse("avares://Avalonia.Fonts.Inter/Assets#Inter")
+            Height = 820
         };
+        window.FontFamily = Environment.GetEnvironmentVariable("USBAC_SCREENSHOT_CJK") == "1"
+            ? new FontFamily("Noto Sans CJK KR")
+            : FontFamily.Parse("avares://Avalonia.Fonts.Inter/Assets#Inter");
         window.Show();
         var frame = window.CaptureRenderedFrame();
         Assert.NotNull(frame);
@@ -57,5 +65,9 @@ public class ScreenshotTests
         Assert.Contains(model.Devices, device => device.Name.Contains("Kingston") && device.Access == "차단");
         Assert.Contains(model.Whitelist, entry => entry.Identity == "0781:5581");
         Assert.Contains("승인된 USB만 허용", model.StatusText);
+        Assert.Equal("예시PC · 사용자", model.MachineText);
+        Assert.DoesNotContain(Environment.UserName, model.MachineText, StringComparison.Ordinal);
+        Assert.NotEmpty(model.Logs);
+        Assert.All(model.Logs, row => Assert.Equal("사용자", row.Who));
     }
 }

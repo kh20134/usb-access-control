@@ -20,6 +20,7 @@ public static class HostFactory
             windows ? CreateWindowsDevices() : new EmptyDeviceEnumerator(),
             windows ? CreateWindowsController() : new RecordingDeviceController(),
             windows ? CreateWindowsElevation() : new FixedElevation(false),
+            new EnvironmentUserContext(),
             SessionOptions.Production,
             windows ? CreateWindowsRegistry() : null);
     }
@@ -36,6 +37,7 @@ public static class HostFactory
             devices,
             new RecordingDeviceController(),
             new FixedElevation(false),
+            new FixedUserContext("사용자", "예시PC"),
             SessionOptions.Preview,
             registry: null);
     }
@@ -70,6 +72,7 @@ public static class HostFactory
         IDeviceEnumerator devices,
         IDeviceController controller,
         IElevationProbe elevation,
+        IUserContext user,
         SessionOptions options,
         IRegistryReader? registry)
     {
@@ -77,7 +80,7 @@ public static class HostFactory
             new PolicyStore(directory, protector),
             new AuditLog(directory, protector),
             new EnforcementStateStore(directory, protector),
-            new EnvironmentUserContext(),
+            user,
             TimeProvider.System,
             enforcer,
             devices,
