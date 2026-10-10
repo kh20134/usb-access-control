@@ -8,6 +8,7 @@
     <ProjectReference Include="..\..\src\UsbAccessControl.App\UsbAccessControl.App.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.22" />
     <PackageReference Include="Avalonia.Headless" Version="11.3.22" />
     <PackageReference Include="Avalonia.Headless.XUnit" Version="11.3.22" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />

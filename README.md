@@ -33,9 +33,9 @@ Windows 10/11 PC에서 USB 대용량 저장장치 접근을 **차단**, **읽기
 
 ## 화면
 
-아래 그림은 실제 Avalonia 창을 헤드리스 렌더러로 캡처한 것입니다. 장치 두 대(SanDisk Ultra, Kingston DataTraveler)는 `--preview`와 같은 **예시 데이터**이고, 캡처 중 Windows 레지스트리는 변경하지 않았습니다. 계정 이름이 빌드 계정으로 보이는 것은 그 환경의 실제 사용자이기 때문입니다. Windows에서 실행하면 같은 화면에 실제 장치와 적용 상태가 나옵니다.
+아래 그림은 실제 Avalonia 창을 헤드리스 렌더러로 캡처한 미리보기입니다. 장치 두 대(SanDisk Ultra, Kingston DataTraveler)는 `--preview`와 같은 **예시 데이터**이고, 캡처 중 Windows 레지스트리는 변경하지 않았습니다. 계정 이름이 빌드 계정으로 보이는 것은 그 환경의 실제 사용자이기 때문입니다. Windows에서 실행하면 같은 화면에 실제 장치와 적용 상태가 나옵니다.
 
-![주 화면. 차단 정책, 승인된 SanDisk, 차단된 Kingston, 감사 로그](docs/ui-main.png)
+![미리보기 데이터로 렌더한 주 화면. 차단 정책, 승인된 SanDisk, 차단된 Kingston, 감사 로그](docs/images/ui_main_preview.png)
 
 ## 설치·빌드 방법
 
@@ -163,7 +163,7 @@ dotnet test UsbAccessControl.sln -c Release
 창 렌더 테스트는 Avalonia 헤드리스와 Skia로 실제 창 비트맵을 만듭니다. 스크린샷 파일을 다시 쓰려면 다음처럼 실행합니다.
 
 ```bash
-USBAC_WRITE_SCREENSHOT=docs/ui-main.png dotnet test tests/UsbAccessControl.App.Tests -c Release --filter MainWindow_renders_a_real_frame
+USBAC_WRITE_SCREENSHOT=docs/images/ui_main_preview.png dotnet test tests/UsbAccessControl.App.Tests -c Release --filter MainWindow_renders_a_real_frame
 ```
 
 ## 라이선스

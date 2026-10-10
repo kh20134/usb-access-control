@@ -16,15 +16,7 @@ public class HeadlessAppBuilder
         Environment.SetEnvironmentVariable("USBAC_HEADLESS", "1");
         return AppBuilder.Configure<App>()
             .UseSkia()
-            .With(new FontManagerOptions
-            {
-                DefaultFamilyName = "Noto Sans CJK KR",
-                FontFallbacks =
-                [
-                    new FontFallback { FontFamily = new FontFamily("Noto Sans CJK KR") },
-                    new FontFallback { FontFamily = new FontFamily("NanumGothic") }
-                ]
-            })
+            .WithInterFont()
             .UseHeadless(new AvaloniaHeadlessPlatformOptions { UseHeadlessDrawing = false });
     }
 }
@@ -39,7 +31,7 @@ public class ScreenshotTests
             DataContext = PreviewSession.CreateModel(),
             Width = 1180,
             Height = 820,
-            FontFamily = new FontFamily("Noto Sans CJK KR, NanumGothic, Malgun Gothic")
+            FontFamily = FontFamily.Parse("avares://Avalonia.Fonts.Inter/Assets#Inter")
         };
         window.Show();
         var frame = window.CaptureRenderedFrame();
