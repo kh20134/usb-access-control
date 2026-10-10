@@ -33,7 +33,7 @@ Windows 10/11 PC에서 USB 대용량 저장장치 접근을 **차단**, **읽기
 
 ## 화면
 
-아래 그림은 실제 Avalonia 창을 헤드리스 렌더러로 캡처한 미리보기입니다. 장치 두 대(SanDisk Ultra, Kingston DataTraveler)는 `--preview`와 같은 **예시 데이터**이고, 캡처 중 Windows 레지스트리는 변경하지 않았습니다. 계정 이름이 빌드 계정으로 보이는 것은 그 환경의 실제 사용자이기 때문입니다. Windows에서 실행하면 같은 화면에 실제 장치와 적용 상태가 나옵니다.
+아래 그림은 실제 Avalonia 창을 헤드리스 렌더러로 캡처한 미리보기입니다. 장치 두 대(SanDisk Ultra, Kingston DataTraveler)와 오른쪽 위의 `예시PC · 사용자`는 `--preview`와 같은 **예시 데이터**이고, 캡처 중 Windows 레지스트리는 변경하지 않았습니다. Windows에서 실행하면 같은 화면에 그 PC의 계정, 실제 장치, 적용 상태가 나옵니다.
 
 ![미리보기 데이터로 렌더한 주 화면. 차단 정책, 승인된 SanDisk, 차단된 Kingston, 감사 로그](docs/images/ui_main_preview.png)
 
@@ -160,10 +160,10 @@ dotnet test UsbAccessControl.sln -c Release
 
 `UsbAccessControl.Core.Tests`와 `UsbAccessControl.Cli.Tests`는 Windows API를 호출하지 않습니다. 레지스트리 적용은 가짜 편집기로, 장치 노드는 기록용 컨트롤러로 검증합니다. GitHub Actions는 `ubuntu-latest`에서 전체 테스트를 실행하고, `windows-latest`에서 같은 솔루션을 빌드하고 테스트합니다. Windows 작업도 러너의 USB 정책을 바꾸지 않습니다. 실제 레지스트리 적용은 관리자가 자신의 PC에서 `policy apply`를 실행할 때의 동작입니다.
 
-창 렌더 테스트는 Avalonia 헤드리스와 Skia로 실제 창 비트맵을 만듭니다. 스크린샷 파일을 다시 쓰려면 다음처럼 실행합니다.
+창 렌더 테스트는 Avalonia 헤드리스와 Skia로 실제 창 비트맵을 만듭니다. CI에서는 한글 글꼴이 없어도 되도록 임베드된 Inter로 그립니다. 저장소의 미리보기 그림은 한글이 보이도록 Noto Sans CJK KR이 설치된 환경에서 같은 창을 다시 캡처한 것입니다.
 
 ```bash
-USBAC_WRITE_SCREENSHOT=docs/images/ui_main_preview.png dotnet test tests/UsbAccessControl.App.Tests -c Release --filter MainWindow_renders_a_real_frame
+USBAC_SCREENSHOT_CJK=1 USBAC_WRITE_SCREENSHOT=docs/images/ui_main_preview.png dotnet test tests/UsbAccessControl.App.Tests -c Release --filter MainWindow_renders_a_real_frame
 ```
 
 ## 라이선스

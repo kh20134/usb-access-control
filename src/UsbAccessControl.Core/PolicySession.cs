@@ -59,6 +59,8 @@ public sealed class PolicySession
 
     public SessionOptions Options { get; }
     public PolicyDocument Document => _document;
+    public string UserName => _user.UserName;
+    public string MachineName => _user.MachineName;
     public IReadOnlyList<string> LoadWarnings { get; private set; }
     public IReadOnlyDictionary<string, string> ControlResults => _controlResults;
     public bool IsElevated => _elevation.IsElevated;

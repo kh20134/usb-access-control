@@ -155,16 +155,18 @@
           <TextBlock DockPanel.Dock="Top" Classes="h" Text="승인된 USB (화이트리스트)" />
           <TextBlock DockPanel.Dock="Top" Classes="muted" Margin="0,4,0,8"
                      Text="VID와 PID가 같고, 일련번호를 비우면 그 제품 전체를 승인합니다. 일련번호를 적으면 그 장치만 승인합니다." />
-          <Grid DockPanel.Dock="Bottom" ColumnDefinitions="70,70,*,*" ColumnSpacing="6" Margin="0,8,0,0">
-            <TextBox Watermark="VID" Text="{Binding NewVid}" />
-            <TextBox Grid.Column="1" Watermark="PID" Text="{Binding NewPid}" />
-            <TextBox Grid.Column="2" Watermark="일련번호" Text="{Binding NewSerial}" />
-            <TextBox Grid.Column="3" Watermark="표시 이름" Text="{Binding NewName}" />
-          </Grid>
-          <Grid DockPanel.Dock="Bottom" ColumnDefinitions="*,Auto" ColumnSpacing="6" Margin="0,6,0,0">
-            <TextBox Watermark="메모 (선택)" Text="{Binding NewNote}" />
-            <Button Classes="action" Content="추가" Click="OnAdd" />
-          </Grid>
+          <StackPanel DockPanel.Dock="Bottom" Spacing="6" Margin="0,8,0,0">
+            <Grid ColumnDefinitions="72,72,*,*" ColumnSpacing="6">
+              <TextBox Watermark="VID" Text="{Binding NewVid}" />
+              <TextBox Grid.Column="1" Watermark="PID" Text="{Binding NewPid}" />
+              <TextBox Grid.Column="2" Watermark="일련번호" Text="{Binding NewSerial}" />
+              <TextBox Grid.Column="3" Watermark="표시 이름" Text="{Binding NewName}" />
+            </Grid>
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="6">
+              <TextBox Watermark="메모 (선택)" Text="{Binding NewNote}" />
+              <Button Grid.Column="1" Classes="action" Content="추가" MinWidth="72" VerticalAlignment="Center" Click="OnAdd" />
+            </Grid>
+          </StackPanel>
           <ScrollViewer Margin="0,8,0,0">
             <ItemsControl ItemsSource="{Binding Whitelist}">
               <ItemsControl.ItemTemplate>
