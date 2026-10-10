@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>UsbAccessControl.Core</RootNamespace>
+    <AssemblyName>UsbAccessControl.Core</AssemblyName>
+    <Description>USB 저장장치 접근통제의 정책, 화이트리스트, 감사 로그, 적용 계획.</Description>
+  </PropertyGroup>
+</Project>

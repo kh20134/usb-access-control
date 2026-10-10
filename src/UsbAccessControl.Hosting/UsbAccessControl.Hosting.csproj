@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>UsbAccessControl.Hosting</RootNamespace>
+    <AssemblyName>UsbAccessControl.Hosting</AssemblyName>
+    <Description>CLI와 UI가 공유하는 구성과 감시 루프.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UsbAccessControl.Core\UsbAccessControl.Core.csproj" />
+    <ProjectReference Include="..\UsbAccessControl.Windows\UsbAccessControl.Windows.csproj" />
+  </ItemGroup>
+</Project>

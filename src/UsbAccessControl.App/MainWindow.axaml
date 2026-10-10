@@ -1,0 +1,231 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="UsbAccessControl.App.MainWindow"
+        Title="USB 저장장치 접근통제"
+        Width="1180"
+        Height="820"
+        MinWidth="980"
+        MinHeight="700"
+        Background="#F3F5F8"
+        FontFamily="Malgun Gothic, Noto Sans CJK KR, NanumGothic, WenQuanYi Micro Hei"
+        FontSize="13">
+  <Window.Styles>
+    <Style Selector="Border.card">
+      <Setter Property="Background" Value="#FFFFFF" />
+      <Setter Property="BorderBrush" Value="#E4E7EC" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="8" />
+      <Setter Property="Padding" Value="14" />
+    </Style>
+    <Style Selector="TextBlock.h">
+      <Setter Property="FontSize" Value="14" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="Foreground" Value="#102A43" />
+    </Style>
+    <Style Selector="TextBlock.muted">
+      <Setter Property="Foreground" Value="#667085" />
+      <Setter Property="FontSize" Value="12" />
+      <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+    <Style Selector="Button.action">
+      <Setter Property="Background" Value="#102A43" />
+      <Setter Property="Foreground" Value="White" />
+      <Setter Property="Padding" Value="14,8" />
+      <Setter Property="CornerRadius" Value="6" />
+    </Style>
+    <Style Selector="Button.quiet">
+      <Setter Property="Background" Value="#FFFFFF" />
+      <Setter Property="Foreground" Value="#102A43" />
+      <Setter Property="BorderBrush" Value="#D0D5DD" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="Padding" Value="12,8" />
+      <Setter Property="CornerRadius" Value="6" />
+    </Style>
+    <Style Selector="TextBox">
+      <Setter Property="MinHeight" Value="32" />
+    </Style>
+    <Style Selector="RadioButton.mode">
+      <Setter Property="Foreground" Value="#102A43" />
+      <Setter Property="MinWidth" Value="112" />
+      <Setter Property="Margin" Value="0,0,8,0" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Name="Root"
+                  Background="#FFFFFF"
+                  BorderBrush="#D0D5DD"
+                  BorderThickness="1"
+                  CornerRadius="6"
+                  Padding="14,8">
+            <ContentPresenter HorizontalAlignment="Center"
+                              VerticalAlignment="Center"
+                              Content="{TemplateBinding Content}" />
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+    <Style Selector="RadioButton.mode:checked">
+      <Setter Property="Foreground" Value="White" />
+    </Style>
+    <Style Selector="RadioButton.block:checked /template/ Border#Root">
+      <Setter Property="Background" Value="#9F1239" />
+      <Setter Property="BorderBrush" Value="#9F1239" />
+    </Style>
+    <Style Selector="RadioButton.readonly:checked /template/ Border#Root">
+      <Setter Property="Background" Value="#9A3412" />
+      <Setter Property="BorderBrush" Value="#9A3412" />
+    </Style>
+    <Style Selector="RadioButton.allow:checked /template/ Border#Root">
+      <Setter Property="Background" Value="#0F6E56" />
+      <Setter Property="BorderBrush" Value="#0F6E56" />
+    </Style>
+  </Window.Styles>
+
+  <Grid RowDefinitions="Auto,Auto,*,220,Auto" IsEnabled="{Binding InputsEnabled}">
+    <Border Grid.Row="0" Background="#102A43" Padding="20,14">
+      <Grid ColumnDefinitions="*,Auto">
+        <StackPanel>
+          <TextBlock Text="USB 저장장치 접근통제" FontSize="20" FontWeight="SemiBold" Foreground="White" />
+          <TextBlock Text="엔드포인트 매체제어 · 차단 / 읽기 전용 / 허용" Foreground="#D9E2EC" FontSize="12" Margin="0,4,0,0" />
+        </StackPanel>
+        <StackPanel Grid.Column="1" HorizontalAlignment="Right">
+          <Border Background="#243B53" CornerRadius="10" Padding="10,4" HorizontalAlignment="Right">
+            <TextBlock Text="{Binding ElevationText}" Foreground="White" />
+          </Border>
+          <TextBlock Text="{Binding MachineText}" Foreground="#D9E2EC" FontSize="12" Margin="0,6,0,0" HorizontalAlignment="Right" />
+        </StackPanel>
+      </Grid>
+    </Border>
+
+    <Border Grid.Row="1" Background="#FFF7ED" IsVisible="{Binding ShowPreviewBanner}" Padding="20,8">
+      <TextBlock Text="{Binding PreviewBanner}" Foreground="#9A3412" TextWrapping="Wrap" />
+    </Border>
+
+    <Grid Grid.Row="2" ColumnDefinitions="*,*" Margin="16,12,16,8">
+      <StackPanel Grid.Column="0" Margin="0,0,8,0" Spacing="10">
+        <Border Classes="card">
+          <StackPanel Spacing="8">
+            <TextBlock Classes="h" Text="현재 정책" />
+            <StackPanel Orientation="Horizontal">
+              <RadioButton Classes="mode block" GroupName="policy" Content="차단" IsChecked="{Binding IsBlock}" />
+              <RadioButton Classes="mode readonly" GroupName="policy" Content="읽기 전용" IsChecked="{Binding IsReadOnly}" />
+              <RadioButton Classes="mode allow" GroupName="policy" Content="허용" IsChecked="{Binding IsAllow}" />
+            </StackPanel>
+            <TextBlock Text="{Binding StatusText}" FontWeight="SemiBold" Foreground="#102A43" TextWrapping="Wrap" />
+            <TextBlock Classes="muted" Text="{Binding PlanNotes}" />
+            <TextBlock Classes="muted" Text="{Binding ErrorMessage}" Foreground="#9F1239" />
+            <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="8">
+              <TextBox Watermark="관리자 암호 (설정한 경우)" PasswordChar="●" Text="{Binding Password}" />
+              <Button Grid.Column="1" Classes="action" Content="Windows에 적용" Click="OnApply" />
+              <Button Grid.Column="2" Classes="quiet" Content="장치 검색" Click="OnRefresh" />
+              <Button Grid.Column="3" Classes="quiet" Content="{Binding MonitorText}" Click="OnMonitor" />
+            </Grid>
+          </StackPanel>
+        </Border>
+
+        <Border Classes="card">
+          <DockPanel>
+            <TextBlock DockPanel.Dock="Top" Classes="h" Text="연결된 USB 저장장치" Margin="0,0,0,8" />
+            <Grid DockPanel.Dock="Top" ColumnDefinitions="180,110,160,70,*" Margin="0,0,0,4">
+              <TextBlock Classes="muted" Text="이름" />
+              <TextBlock Grid.Column="1" Classes="muted" Text="VID:PID" />
+              <TextBlock Grid.Column="2" Classes="muted" Text="일련번호" />
+              <TextBlock Grid.Column="3" Classes="muted" Text="판정" />
+            </Grid>
+            <ScrollViewer>
+              <ItemsControl ItemsSource="{Binding Devices}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <Grid ColumnDefinitions="180,110,160,70,*" Margin="0,3">
+                      <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" />
+                      <TextBlock Grid.Column="1" Text="{Binding Identity}" />
+                      <TextBlock Grid.Column="2" Text="{Binding Serial}" TextTrimming="CharacterEllipsis" />
+                      <TextBlock Grid.Column="3" Text="{Binding Access}" FontWeight="SemiBold" />
+                      <Button Grid.Column="4" Classes="quiet" Content="승인 목록에 넣기" HorizontalAlignment="Right" Padding="8,2" Click="OnStage" />
+                    </Grid>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </ScrollViewer>
+          </DockPanel>
+        </Border>
+      </StackPanel>
+
+      <Border Grid.Column="1" Classes="card" Margin="8,0,0,0">
+        <DockPanel>
+          <TextBlock DockPanel.Dock="Top" Classes="h" Text="승인된 USB (화이트리스트)" />
+          <TextBlock DockPanel.Dock="Top" Classes="muted" Margin="0,4,0,8"
+                     Text="VID와 PID가 같고, 일련번호를 비우면 그 제품 전체를 승인합니다. 일련번호를 적으면 그 장치만 승인합니다." />
+          <Grid DockPanel.Dock="Bottom" ColumnDefinitions="70,70,*,*" ColumnSpacing="6" Margin="0,8,0,0">
+            <TextBox Watermark="VID" Text="{Binding NewVid}" />
+            <TextBox Grid.Column="1" Watermark="PID" Text="{Binding NewPid}" />
+            <TextBox Grid.Column="2" Watermark="일련번호" Text="{Binding NewSerial}" />
+            <TextBox Grid.Column="3" Watermark="표시 이름" Text="{Binding NewName}" />
+          </Grid>
+          <Grid DockPanel.Dock="Bottom" ColumnDefinitions="*,Auto" ColumnSpacing="6" Margin="0,6,0,0">
+            <TextBox Watermark="메모 (선택)" Text="{Binding NewNote}" />
+            <Button Classes="action" Content="추가" Click="OnAdd" />
+          </Grid>
+          <ScrollViewer Margin="0,8,0,0">
+            <ItemsControl ItemsSource="{Binding Whitelist}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <Grid ColumnDefinitions="90,140,*,Auto" Margin="0,4">
+                    <TextBlock Text="{Binding Identity}" />
+                    <TextBlock Grid.Column="1" Text="{Binding Serial}" TextTrimming="CharacterEllipsis" />
+                    <TextBlock Grid.Column="2" Text="{Binding Name}" TextTrimming="CharacterEllipsis" />
+                    <Button Grid.Column="3" Classes="quiet" Content="삭제" Padding="8,2" Click="OnRemove" />
+                  </Grid>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </ScrollViewer>
+        </DockPanel>
+      </Border>
+    </Grid>
+
+    <Border Grid.Row="3" Classes="card" Margin="16,0,16,8">
+      <DockPanel>
+        <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto,Auto" Margin="0,0,0,8">
+          <TextBlock Classes="h" Text="최근 감사 로그" VerticalAlignment="Center" />
+          <Button Grid.Column="1" Classes="quiet" Content="CSV 내보내기" Click="OnExport" Margin="0,0,8,0" />
+          <Expander Grid.Column="2" Header="관리자 암호">
+            <StackPanel Spacing="6" Width="220" Margin="0,8,0,0">
+              <TextBox Watermark="새 암호 8자 이상" PasswordChar="●" Text="{Binding NewPassword}" />
+              <Button Classes="quiet" Content="암호 저장" Click="OnSetPassword" />
+              <Button Classes="quiet" Content="암호 해제" Click="OnClearPassword" />
+            </StackPanel>
+          </Expander>
+        </Grid>
+        <Grid DockPanel.Dock="Top" ColumnDefinitions="110,90,120,140,70,*" Margin="0,0,0,4">
+          <TextBlock Classes="muted" Text="시각" />
+          <TextBlock Grid.Column="1" Classes="muted" Text="사용자" />
+          <TextBlock Grid.Column="2" Classes="muted" Text="동작" />
+          <TextBlock Grid.Column="3" Classes="muted" Text="장치" />
+          <TextBlock Grid.Column="4" Classes="muted" Text="결과" />
+          <TextBlock Grid.Column="5" Classes="muted" Text="내용" />
+        </Grid>
+        <ScrollViewer>
+          <ItemsControl ItemsSource="{Binding Logs}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <Grid ColumnDefinitions="110,90,120,140,70,*" Margin="0,2">
+                  <TextBlock Text="{Binding When}" />
+                  <TextBlock Grid.Column="1" Text="{Binding Who}" TextTrimming="CharacterEllipsis" />
+                  <TextBlock Grid.Column="2" Text="{Binding Action}" />
+                  <TextBlock Grid.Column="3" Text="{Binding Device}" TextTrimming="CharacterEllipsis" />
+                  <TextBlock Grid.Column="4" Text="{Binding Result}" />
+                  <TextBlock Grid.Column="5" Text="{Binding Detail}" TextTrimming="CharacterEllipsis" />
+                </Grid>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </ScrollViewer>
+      </DockPanel>
+    </Border>
+
+    <Border Grid.Row="4" Background="#E4E7EC" Padding="16,8">
+      <TextBlock Classes="muted"
+                 Text="로컬 관리자는 레지스트리와 정책 파일을 직접 고쳐 우회할 수 있습니다. 상용 DLP, 도메인 그룹 정책, Intune을 대체하지 않습니다. 정책을 적용하려면 관리자 권한이 필요합니다." />
+    </Border>
+  </Grid>
+</Window>

@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>UsbAccessControl.Cli</RootNamespace>
+    <AssemblyName>usbac</AssemblyName>
+    <Description>USB 저장장치 접근통제 명령줄.</Description>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UsbAccessControl.Hosting\UsbAccessControl.Hosting.csproj" />
+  </ItemGroup>
+</Project>
