@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  linux:
+    name: Linux tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - name: Native libraries used by the UI render test
+        run: sudo apt-get update && sudo apt-get install -y libfontconfig1 libfreetype6
+      - name: Test
+        run: dotnet test UsbAccessControl.sln -c Release --logger "trx;LogFileName=linux.trx"
+
+  windows:
+    name: Windows build and tests
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - name: Test
+        run: dotnet test UsbAccessControl.sln -c Release --logger "trx;LogFileName=windows.trx"

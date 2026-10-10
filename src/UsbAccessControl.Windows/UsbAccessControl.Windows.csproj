@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>UsbAccessControl.Windows</RootNamespace>
+    <AssemblyName>UsbAccessControl.Windows</AssemblyName>
+    <Description>Windows 레지스트리, SetupAPI, cfgmgr32, WMI 적용 계층.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UsbAccessControl.Core\UsbAccessControl.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Management" Version="8.0.0" />
+    <PackageReference Include="System.IO.FileSystem.AccessControl" Version="5.0.0" />
+  </ItemGroup>
+</Project>

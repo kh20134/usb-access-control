@@ -1,0 +1,22 @@
+bin/
+obj/
+.vs/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+TestResults/
+artifacts/
+*.trx
+.dotnet/
+.tools/
+*.DotSettings.user
+
+# Preview and local policy data must not be committed.
+*.preview-data/
+usbac-preview/
+
+# OS noise
+.DS_Store
+Thumbs.db
