@@ -19,7 +19,9 @@ Windows 10/11 PC에서 USB 대용량 저장장치 접근을 **차단**, **읽기
 - **CLI (`usbac`)**: 스크립트와 작업 스케줄러용 명령
 - **앱**: 한국어 Avalonia 창. CLI와 같은 정책 파일을 사용합니다
 
-![구조](docs/architecture.svg)
+![USB 저장장치 접근통제 구조도: 관리자 권한 경계 안의 앱·CLI·시작 작업, Core PolicySession, 보호 데이터 폴더, Windows 계층과 HKLM·PnP, 외부 USB 매체](docs/architecture.png)
+
+벡터 원본은 [docs/architecture.svg](docs/architecture.svg)입니다. 글자를 윤곽선으로 바꿔 두어 한글 폰트가 없는 환경에서도 같은 모양으로 보입니다.
 
 ## 주요 기능
 
