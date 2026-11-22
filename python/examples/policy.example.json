@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "mode": "block",
+  "whitelist": [
+    {
+      "id": "11111111-1111-1111-1111-111111111111",
+      "vendorId": "0781",
+      "productId": "5581",
+      "serialNumber": "EXAMPLE-SERIAL",
+      "displayName": "Example approved drive",
+      "note": "Replace with a device your organization has approved.",
+      "createdAt": "2026-01-02T03:04:05+00:00"
+    }
+  ],
+  "adminPassword": null,
+  "updatedAt": "2026-01-02T03:04:05+00:00",
+  "updatedBy": null,
+  "appliedAt": null,
+  "appliedFingerprint": null
+}

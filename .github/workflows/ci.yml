@@ -31,3 +31,17 @@ jobs:
           dotnet-version: "8.0.x"
       - name: Test
         run: dotnet test UsbAccessControl.sln -c Release --logger "trx;LogFileName=windows.trx"
+
+  python:
+    name: Python tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Test
+        working-directory: python
+        run: |
+          python -m pip install pytest
+          python -m pytest

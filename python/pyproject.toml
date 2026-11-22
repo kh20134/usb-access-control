@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "usbac-py"
+version = "1.0.0"
+description = "Windows USB storage access control. Allow, read-only, or block by VID/PID/serial."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "kh20134" }]
+dependencies = []
+
+[project.optional-dependencies]
+windows = ["pywin32>=306"]
+dev = ["pytest>=8"]
+
+[project.scripts]
+usbac-py = "usbac_py.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["usbac_py*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
