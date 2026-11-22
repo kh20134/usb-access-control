@@ -8,7 +8,24 @@ Windows 10/11 PC에서 USB 대용량 저장장치 접근을 **차단**, **읽기
 
 이 프로그램은 상용 DLP, 도메인 그룹 정책, Intune을 대체하지 않습니다. 로컬 관리자는 레지스트리와 정책 파일을 직접 고쳐 우회할 수 있습니다.
 
+## 구현
+
+같은 정책 모델의 구현이 둘 있습니다. 정책 판단 단위 테스트는 둘 다 Linux에서 Windows 장치 없이 돕니다. 라이선스는 루트의 `LICENSE`(MIT) 하나입니다.
+
+| | .NET 8 | Python 3.11+ |
+| --- | --- | --- |
+| 문서 | 이 README | [python/README.md](python/README.md) (한국어와 English) |
+| 실행 | `usbac`, Avalonia 창 | `python -m usbac_py` |
+| 구조도 | [docs/architecture.png](docs/architecture.png) | [docs/architecture-python.png](docs/architecture-python.png) |
+| Windows API | 레지스트리, SetupAPI, cfgmgr32, WMI | `winreg`, ctypes(SetupAPI·cfgmgr32), 선택 사항인 pywin32 WMI |
+
+Python 경로는 사용자 모드에서 장치를 보고 허용·읽기 전용·차단을 계산할 수 있습니다. HKLM에 정책을 쓰거나 USBSTOR 장치 노드를 끄는 일은 관리자 권한입니다. 기본 데이터 폴더는 .NET과 겹치지 않게 `%ProgramData%\UsbAccessControlPy`입니다.
+
+There are two implementations. The .NET app is documented below. The Python CLI is documented in [python/README.md](python/README.md).
+
 ## 개요
+
+아래 개요부터는 .NET 구현입니다. Python 구현의 권한 경계와 Windows 실행 방법은 [python/README.md](python/README.md)에 있습니다.
 
 관리자가 한 대 또는 소수의 Windows PC에서 USB 저장장치 정책을 파일로 저장하고, 문서화된 Windows 정책 레지스트리와 장치 노드 제어로 적용합니다. 정책 판단, 화이트리스트 대조, 감사 로그, CSV 내보내기는 Windows API 없이 동작하므로 Linux에서도 단위 테스트를 돌릴 수 있습니다. 레지스트리와 장치 노드를 실제로 바꾸는 코드는 Windows에서 관리자 권한으로 실행할 때만 호출됩니다.
 
